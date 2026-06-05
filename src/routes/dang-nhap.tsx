@@ -93,12 +93,6 @@ function LoginPage() {
           </Link>
           . Liên hệ quản trị viên để được cấp tài khoản.
         </p>
-
-        <div className="mt-4 rounded-md border border-dashed bg-muted/40 p-3 text-xs text-muted-foreground">
-          <p className="font-medium text-foreground">Tài khoản demo</p>
-          <p>Admin: admin@fpt.com / admin123</p>
-          <p>User: user@fpt.com / user123</p>
-        </div>
       </div>
     </div>
   );
