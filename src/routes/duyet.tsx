@@ -1,11 +1,22 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AppLayout } from "@/components/AppLayout";
 import { TagBadge } from "@/components/TagBadge";
-import { MOCK_DOCS } from "@/lib/mock-data";
-import { CheckCircle2, RotateCcw } from "lucide-react";
+import { listDocs } from "@/lib/api/docs.functions";
+import { useUpdateDocStatus, useDocs } from "@/lib/queries";
+import { CheckCircle2, RotateCcw, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { requireAdminRoute } from "@/lib/auth-route-guard";
 
 export const Route = createFileRoute("/duyet")({
+  beforeLoad: ({ context }) => requireAdminRoute(context),
+  loader: async ({ context }) => {
+    const docs = await listDocs();
+    await context.queryClient.ensureQueryData({
+      queryKey: ["docs"],
+      queryFn: () => Promise.resolve(docs),
+    });
+    return docs;
+  },
   head: () => ({
     meta: [{ title: "Hàng đợi duyệt — Kho tri thức Consultant AI" }],
   }),
@@ -21,7 +32,26 @@ function ReviewPage() {
 }
 
 function ReviewQueue() {
-  const queue = MOCK_DOCS.filter((d) => d.status !== "Đã duyệt");
+  const { data: docs = [], isLoading } = useDocs();
+  const statusMut = useUpdateDocStatus();
+  const queue = docs.filter((d) => d.status !== "Đã duyệt");
+
+  const handleStatus = async (id: string, status: "Nháp" | "Đã duyệt") => {
+    try {
+      await statusMut.mutateAsync({ id, status });
+      toast.success(status === "Đã duyệt" ? "Đã duyệt tài liệu." : "Đã trả lại tài liệu.");
+    } catch {
+      toast.error("Không thể cập nhật trạng thái.");
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-20 text-muted-foreground">
+        <Loader2 className="h-6 w-6 animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-6 lg:py-8">
@@ -61,20 +91,25 @@ function ReviewQueue() {
                   </div>
                   <div className="mt-2 text-xs text-muted-foreground">
                     {d.owner} • cập nhật {d.updatedAt}
+                    {d.attachments.length > 0 && ` • ${d.attachments.length} tài nguyên`}
                   </div>
                 </div>
 
                 <div className="flex shrink-0 gap-2">
                   <button
-                    onClick={() => toast.message("Đã trả lại tài liệu cho người sở hữu.")}
-                    className="inline-flex items-center gap-1.5 rounded-md border bg-card px-3 py-1.5 text-sm font-medium hover:bg-accent"
+                    type="button"
+                    disabled={statusMut.isPending}
+                    onClick={() => handleStatus(d.id, "Nháp")}
+                    className="inline-flex items-center gap-1.5 rounded-md border bg-card px-3 py-1.5 text-sm font-medium hover:bg-accent disabled:opacity-50"
                   >
                     <RotateCcw className="h-4 w-4" />
                     Trả lại
                   </button>
                   <button
-                    onClick={() => toast.success("Đã duyệt tài liệu.")}
-                    className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+                    type="button"
+                    disabled={statusMut.isPending}
+                    onClick={() => handleStatus(d.id, "Đã duyệt")}
+                    className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
                   >
                     <CheckCircle2 className="h-4 w-4" />
                     Duyệt

@@ -11,10 +11,16 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ThuVienRouteImport } from './routes/thu-vien'
 import { Route as TemplateRouteImport } from './routes/template'
+import { Route as QuyTrinhRouteImport } from './routes/quy-trinh'
 import { Route as DuyetRouteImport } from './routes/duyet'
+import { Route as DangNhapRouteImport } from './routes/dang-nhap'
+import { Route as CaseSuccessRouteImport } from './routes/case-success'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CaseSuccessIndexRouteImport } from './routes/case-success.index'
 import { Route as TaiLieuSlugRouteImport } from './routes/tai-lieu.$slug'
 import { Route as SoanIdRouteImport } from './routes/soan.$id'
+import { Route as QuanTriTaiKhoanRouteImport } from './routes/quan-tri/tai-khoan'
+import { Route as CaseSuccessIdRouteImport } from './routes/case-success.$id'
 
 const ThuVienRoute = ThuVienRouteImport.update({
   id: '/thu-vien',
@@ -26,15 +32,35 @@ const TemplateRoute = TemplateRouteImport.update({
   path: '/template',
   getParentRoute: () => rootRouteImport,
 } as any)
+const QuyTrinhRoute = QuyTrinhRouteImport.update({
+  id: '/quy-trinh',
+  path: '/quy-trinh',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DuyetRoute = DuyetRouteImport.update({
   id: '/duyet',
   path: '/duyet',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DangNhapRoute = DangNhapRouteImport.update({
+  id: '/dang-nhap',
+  path: '/dang-nhap',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CaseSuccessRoute = CaseSuccessRouteImport.update({
+  id: '/case-success',
+  path: '/case-success',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const CaseSuccessIndexRoute = CaseSuccessIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => CaseSuccessRoute,
 } as any)
 const TaiLieuSlugRoute = TaiLieuSlugRouteImport.update({
   id: '/tai-lieu/$slug',
@@ -46,64 +72,112 @@ const SoanIdRoute = SoanIdRouteImport.update({
   path: '/soan/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const QuanTriTaiKhoanRoute = QuanTriTaiKhoanRouteImport.update({
+  id: '/quan-tri/tai-khoan',
+  path: '/quan-tri/tai-khoan',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CaseSuccessIdRoute = CaseSuccessIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => CaseSuccessRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/case-success': typeof CaseSuccessRouteWithChildren
+  '/dang-nhap': typeof DangNhapRoute
   '/duyet': typeof DuyetRoute
+  '/quy-trinh': typeof QuyTrinhRoute
   '/template': typeof TemplateRoute
   '/thu-vien': typeof ThuVienRoute
+  '/case-success/$id': typeof CaseSuccessIdRoute
+  '/quan-tri/tai-khoan': typeof QuanTriTaiKhoanRoute
   '/soan/$id': typeof SoanIdRoute
   '/tai-lieu/$slug': typeof TaiLieuSlugRoute
+  '/case-success/': typeof CaseSuccessIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/dang-nhap': typeof DangNhapRoute
   '/duyet': typeof DuyetRoute
+  '/quy-trinh': typeof QuyTrinhRoute
   '/template': typeof TemplateRoute
   '/thu-vien': typeof ThuVienRoute
+  '/case-success/$id': typeof CaseSuccessIdRoute
+  '/quan-tri/tai-khoan': typeof QuanTriTaiKhoanRoute
   '/soan/$id': typeof SoanIdRoute
   '/tai-lieu/$slug': typeof TaiLieuSlugRoute
+  '/case-success': typeof CaseSuccessIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/case-success': typeof CaseSuccessRouteWithChildren
+  '/dang-nhap': typeof DangNhapRoute
   '/duyet': typeof DuyetRoute
+  '/quy-trinh': typeof QuyTrinhRoute
   '/template': typeof TemplateRoute
   '/thu-vien': typeof ThuVienRoute
+  '/case-success/$id': typeof CaseSuccessIdRoute
+  '/quan-tri/tai-khoan': typeof QuanTriTaiKhoanRoute
   '/soan/$id': typeof SoanIdRoute
   '/tai-lieu/$slug': typeof TaiLieuSlugRoute
+  '/case-success/': typeof CaseSuccessIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/case-success'
+    | '/dang-nhap'
     | '/duyet'
+    | '/quy-trinh'
     | '/template'
     | '/thu-vien'
+    | '/case-success/$id'
+    | '/quan-tri/tai-khoan'
     | '/soan/$id'
     | '/tai-lieu/$slug'
+    | '/case-success/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/dang-nhap'
     | '/duyet'
+    | '/quy-trinh'
     | '/template'
     | '/thu-vien'
+    | '/case-success/$id'
+    | '/quan-tri/tai-khoan'
     | '/soan/$id'
     | '/tai-lieu/$slug'
+    | '/case-success'
   id:
     | '__root__'
     | '/'
+    | '/case-success'
+    | '/dang-nhap'
     | '/duyet'
+    | '/quy-trinh'
     | '/template'
     | '/thu-vien'
+    | '/case-success/$id'
+    | '/quan-tri/tai-khoan'
     | '/soan/$id'
     | '/tai-lieu/$slug'
+    | '/case-success/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CaseSuccessRoute: typeof CaseSuccessRouteWithChildren
+  DangNhapRoute: typeof DangNhapRoute
   DuyetRoute: typeof DuyetRoute
+  QuyTrinhRoute: typeof QuyTrinhRoute
   TemplateRoute: typeof TemplateRoute
   ThuVienRoute: typeof ThuVienRoute
+  QuanTriTaiKhoanRoute: typeof QuanTriTaiKhoanRoute
   SoanIdRoute: typeof SoanIdRoute
   TaiLieuSlugRoute: typeof TaiLieuSlugRoute
 }
@@ -124,11 +198,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TemplateRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/quy-trinh': {
+      id: '/quy-trinh'
+      path: '/quy-trinh'
+      fullPath: '/quy-trinh'
+      preLoaderRoute: typeof QuyTrinhRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/duyet': {
       id: '/duyet'
       path: '/duyet'
       fullPath: '/duyet'
       preLoaderRoute: typeof DuyetRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dang-nhap': {
+      id: '/dang-nhap'
+      path: '/dang-nhap'
+      fullPath: '/dang-nhap'
+      preLoaderRoute: typeof DangNhapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/case-success': {
+      id: '/case-success'
+      path: '/case-success'
+      fullPath: '/case-success'
+      preLoaderRoute: typeof CaseSuccessRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -137,6 +232,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/case-success/': {
+      id: '/case-success/'
+      path: '/'
+      fullPath: '/case-success/'
+      preLoaderRoute: typeof CaseSuccessIndexRouteImport
+      parentRoute: typeof CaseSuccessRoute
     }
     '/tai-lieu/$slug': {
       id: '/tai-lieu/$slug'
@@ -152,17 +254,59 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SoanIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/quan-tri/tai-khoan': {
+      id: '/quan-tri/tai-khoan'
+      path: '/quan-tri/tai-khoan'
+      fullPath: '/quan-tri/tai-khoan'
+      preLoaderRoute: typeof QuanTriTaiKhoanRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/case-success/$id': {
+      id: '/case-success/$id'
+      path: '/$id'
+      fullPath: '/case-success/$id'
+      preLoaderRoute: typeof CaseSuccessIdRouteImport
+      parentRoute: typeof CaseSuccessRoute
+    }
   }
 }
 
+interface CaseSuccessRouteChildren {
+  CaseSuccessIdRoute: typeof CaseSuccessIdRoute
+  CaseSuccessIndexRoute: typeof CaseSuccessIndexRoute
+}
+
+const CaseSuccessRouteChildren: CaseSuccessRouteChildren = {
+  CaseSuccessIdRoute: CaseSuccessIdRoute,
+  CaseSuccessIndexRoute: CaseSuccessIndexRoute,
+}
+
+const CaseSuccessRouteWithChildren = CaseSuccessRoute._addFileChildren(
+  CaseSuccessRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CaseSuccessRoute: CaseSuccessRouteWithChildren,
+  DangNhapRoute: DangNhapRoute,
   DuyetRoute: DuyetRoute,
+  QuyTrinhRoute: QuyTrinhRoute,
   TemplateRoute: TemplateRoute,
   ThuVienRoute: ThuVienRoute,
+  QuanTriTaiKhoanRoute: QuanTriTaiKhoanRoute,
   SoanIdRoute: SoanIdRoute,
   TaiLieuSlugRoute: TaiLieuSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

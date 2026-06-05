@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Playbook Tư vấn AI Agent</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#0f172a;--teal:#0d9488;--teal-bg:#f0fdfa;--blue:#2563eb;--blue-bg:#eff6ff;--purple:#7c3aed;--purple-bg:#f5f3ff;--amber:#d97706;--amber-bg:#fffbeb;--green:#059669;--green-bg:#ecfdf5;--coral:#e11d48;--slate:#64748b;--slate-bg:#f1f5f9;--text:#1e293b;--muted:#64748b;--bg:#f8fafc;--card:#fff;--border:#e2e8f0;--border-dark:#cbd5e1}
+body{font-family:"DM Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.65}
+.site-header{background:var(--navy);color:#fff;padding:34px 48px;position:relative;overflow:hidden}
+.site-header::before{content:"";position:absolute;right:-72px;top:-72px;width:260px;height:260px;border-radius:50%;background:rgba(13,148,136,.2)}
+.site-header::after{content:"";position:absolute;left:230px;bottom:-90px;width:220px;height:220px;border-radius:50%;background:rgba(37,99,235,.14)}
+.header-inner{position:relative;z-index:1}.header-tag{font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#2dd4bf;margin-bottom:8px}
+h1.site-title{font-family:"Syne",sans-serif;font-size:34px;font-weight:800;line-height:1.1;margin-bottom:10px}.site-subtitle{max-width:760px;color:rgba(255,255,255,.68);font-size:15px}.version{margin-top:12px;font-size:11px;color:rgba(255,255,255,.4);letter-spacing:.08em;text-transform:uppercase}
+.tab-nav{position:sticky;top:0;z-index:20;display:flex;overflow-x:auto;background:var(--card);border-bottom:1px solid var(--border);padding:0 48px}
+.tab-btn{background:none;border:0;border-bottom:2.5px solid transparent;padding:14px 18px;font-family:inherit;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;white-space:nowrap;transition:.15s}
+.tab-btn:hover{color:var(--text)}.tab-btn.active{color:var(--teal);border-bottom-color:var(--teal)}.tab-content{display:none}.tab-content.active{display:block}
+.section-wrap{max-width:1120px;margin:0 auto;padding:40px 48px}h2.section-title{font-family:"Syne",sans-serif;font-size:27px;color:var(--navy);margin-bottom:8px}h3{font-family:"Syne",sans-serif;font-size:19px;color:var(--navy);margin-bottom:12px}h4{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:10px}p{margin-bottom:12px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px}.card-sm{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:16px 18px}.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.badge{display:inline-flex;align-items:center;font-size:11px;font-weight:800;padding:3px 9px;border-radius:5px;text-transform:uppercase;letter-spacing:.06em}.ph0{background:#f1f5f9;color:#475569}.ph1{background:#eff6ff;color:#1d4ed8}.ph2{background:#f5f3ff;color:#6d28d9}.ph3{background:#f0fdfa;color:#0f766e}.ph4{background:#fffbeb;color:#b45309}.ph5{background:#ecfdf5;color:#047857}
+.divider{border:0;border-top:1px solid var(--border);margin:28px 0}table{width:100%;border-collapse:collapse;font-size:14px;background:#fff;border-radius:12px;overflow:hidden}th{background:var(--slate-bg);color:var(--muted);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;padding:10px 14px;text-align:left;border-bottom:1px solid var(--border)}td{padding:11px 14px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5}tr:last-child td{border-bottom:0}
+.activity-list,.checklist{list-style:none}.activity-list li,.checklist li{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:14px}.activity-list li:last-child,.checklist li:last-child{border-bottom:0}.check-box{width:16px;height:16px;border:1.5px solid var(--border-dark);border-radius:4px;flex-shrink:0;margin-top:3px}.role-tag{font-size:10px;font-weight:800;padding:2px 7px;border-radius:4px;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}.role-s{background:#fef3c7;color:#92400e}.role-c{background:#ede9fe;color:#5b21b6}.role-d{background:#ffedd5;color:#c2410c}.role-m{background:#d1fae5;color:#065f46}
+.callout{border-left:4px solid;border-radius:0 10px 10px 0;padding:14px 16px;margin:16px 0;font-size:14px}.callout.info{border-color:var(--blue);background:var(--blue-bg)}.callout.warn{border-color:var(--amber);background:var(--amber-bg)}.callout.success{border-color:var(--green);background:var(--green-bg)}.callout.tip{border-color:var(--teal);background:var(--teal-bg)}
+.gate-box{background:#fffbeb;border:1.5px solid #fde68a;border-radius:12px;padding:16px 18px;margin-top:18px}.gate-title{font-size:12px;font-weight:800;color:#92400e;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}.deliverable-list{display:flex;flex-wrap:wrap;gap:8px}.deliverable-item{background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:6px 12px;font-size:13px;font-weight:600}
+.sub-tab-nav{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:24px}.sub-tab-btn{background:#fff;border:1px solid var(--border);border-radius:7px;padding:8px 14px;font-family:inherit;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer}.sub-tab-btn.active{background:var(--navy);border-color:var(--navy);color:#fff}.sub-tab-content{display:none}.sub-tab-content.active{display:block}
+.phase-header{border:1px solid;border-radius:14px;padding:24px 28px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between}.phase-num{font-family:"Syne",sans-serif;font-size:62px;font-weight:800;opacity:.12;line-height:1}.brief-hero{background:var(--navy);border-radius:18px;color:#fff;padding:34px 40px;margin-bottom:28px;position:relative;overflow:hidden}.brief-hero::before{content:"3";position:absolute;right:28px;top:-6px;font-family:"Syne",sans-serif;font-size:138px;font-weight:800;color:rgba(255,255,255,.05)}
+.flow{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin:22px 0}.flow-card{border:1px solid;border-radius:12px;padding:14px;min-height:132px;background:#fff}.flow-card small{display:block;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px}.flow-card strong{display:block;font-size:15px;margin-bottom:6px}.flow-card span{display:block;color:var(--muted);font-size:12px}.approval{border-color:#f59e0b!important;background:#fffbeb!important}.mt-8{margin-top:8px}.mt-12{margin-top:12px}.mt-16{margin-top:16px}.mt-20{margin-top:20px}.mt-24{margin-top:24px}.mt-32{margin-top:32px}.mb-16{margin-bottom:16px}.mb-24{margin-bottom:24px}
+@media(max-width:900px){.section-wrap{padding:26px 20px}.site-header{padding:28px 20px}.tab-nav{padding:0 12px}.grid-2,.grid-3,.grid-4,.flow{grid-template-columns:1fr}h1.site-title{font-size:27px}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="header-tag">AI Agent Solutions — Presales & Consulting Team</div>
+    <h1 class="site-title">Playbook tư vấn AI Agent<br>từ cơ hội đến ký hợp đồng</h1>
+    <p class="site-subtitle">Khung làm việc 6 giai đoạn giúp Sales, Consultant, Delivery và Manager phối hợp rõ ràng: ai là PIC, ai review, đầu vào/đầu ra là gì, khi nào được đi tiếp và cần lưu kinh nghiệm nào sau từng khách hàng.</p>
+    <div class="version">Bản Việt hóa r4 · Làm rõ Demo / POC / Pilot · Bổ sung Delivery, thầu và các điểm phê duyệt</div>
+  </div>
+</header>
+
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('briefing',this)">⚡ Tóm tắt 3 phút</button>
+  <button class="tab-btn" onclick="switchTab('process',this)">🗺 Sơ đồ quy trình</button>
+  <button class="tab-btn" onclick="switchTab('playbooks',this)">📋 Playbook giai đoạn</button>
+  <button class="tab-btn" onclick="switchTab('oversight',this)">👁 Quản trị & giám sát</button>
+  <button class="tab-btn" onclick="switchTab('quality',this)">✅ Checklist chất lượng</button>
+  <button class="tab-btn" onclick="switchTab('rfp',this)">📄 Hướng dẫn RFP/RFI</button>
+</nav>
+
+<main>
+<div id="briefing" class="tab-content active">
+<div class="section-wrap">
+  <div class="brief-hero">
+    <div class="header-tag">Đọc phần này trước</div>
+    <h2 style="font-family:Syne,sans-serif;font-size:28px;color:#fff;margin-bottom:12px">Playbook này dùng để làm gì?</h2>
+    <p style="color:rgba(255,255,255,.68);max-width:760px">Mục tiêu là biến một lead thô thành hợp đồng đã ký bằng quy trình có kiểm soát. Mỗi giai đoạn đều có đầu vào, đầu ra, người chịu trách nhiệm, điểm cần review/phê duyệt và kinh nghiệm cần lưu lại.</p>
+  </div>
+
+  <div class="grid-3 mb-24">
+    <div class="card-sm" style="border-left:4px solid var(--coral)"><h4 style="color:var(--coral)">Vấn đề 1</h4><strong>Deal mất đà</strong><p style="font-size:13px;color:var(--muted);margin-top:6px">Không rõ bước tiếp theo, không có PIC, không có deadline. Cơ hội chết dần trong sự mơ hồ.</p></div>
+    <div class="card-sm" style="border-left:4px solid var(--coral)"><h4 style="color:var(--coral)">Vấn đề 2</h4><strong>Scope lệch Delivery</strong><p style="font-size:13px;color:var(--muted);margin-top:6px">Tư vấn cam kết quá tay, đội triển khai nhận scope khó làm hoặc không thể nghiệm thu.</p></div>
+    <div class="card-sm" style="border-left:4px solid var(--coral)"><h4 style="color:var(--coral)">Vấn đề 3</h4><strong>Manager thiếu visibility</strong><p style="font-size:13px;color:var(--muted);margin-top:6px">Rủi ro chỉ lộ ra khi đã muộn, lúc đó chi phí sửa rất cao.</p></div>
+  </div>
+
+  <h3>6 nguyên tắc vận hành cốt lõi</h3>
+  <div class="grid-3 mt-16">
+    <div class="card-sm"><strong>🎯 Use-case trước, công nghệ sau</strong><p style="font-size:13px;color:var(--muted);margin-top:6px">Bắt đầu từ pain point của KH, không bắt đầu bằng tính năng nền tảng.</p></div>
+    <div class="card-sm"><strong>⚡ Chứng minh nhanh, scale đúng</strong><p style="font-size:13px;color:var(--muted);margin-top:6px">Demo trong vài ngày, POC trong 2-4 tuần, Pilot chỉ khi cần xác thực gần production.</p></div>
+    <div class="card-sm"><strong>📐 Scope phải được Delivery kiểm chứng</strong><p style="font-size:13px;color:var(--muted);margin-top:6px">SoW/AC cần được review trước khi gửi KH hoặc ký.</p></div>
+    <div class="card-sm"><strong>🔭 Giám sát async-first</strong><p style="font-size:13px;color:var(--muted);margin-top:6px">Manager nắm tình hình qua weekly status và gate sign-off, không cần micromanage.</p></div>
+    <div class="card-sm approval"><strong>🔒 Gate rõ ràng</strong><p style="font-size:13px;color:var(--muted);margin-top:6px">Điểm nào cần duyệt/review phải highlight. Không qua gate thì không đi tiếp.</p></div>
+    <div class="card-sm"><strong>🤝 Sales + Consultant một tiếng nói</strong><p style="font-size:13px;color:var(--muted);margin-top:6px">Sales sở hữu quan hệ và thương mại, Consultant sở hữu giải pháp. KH chỉ nhận một thông điệp thống nhất.</p></div>
+  </div>
+
+  <hr class="divider">
+  <h3>6 giai đoạn nhìn nhanh</h3>
+  <p style="color:var(--muted)">Tổng thời gian thường gặp: 10-20 tuần. Pilot là giai đoạn tùy chọn; nếu POC đủ tạo niềm tin thì có thể đi thẳng sang RFP/RFI hoặc hợp đồng.</p>
+  <div class="flow">
+    <div class="flow-card ph0"><small>Phase 0</small><strong>Intake & Qualify</strong><span>Nhận cơ hội, đánh giá nhanh, assign consultant</span></div>
+    <div class="flow-card ph1"><small>Phase 1</small><strong>Discovery</strong><span>Làm rõ use case, dữ liệu, stakeholder, AC sơ bộ</span></div>
+    <div class="flow-card ph2"><small>Phase 2</small><strong>POC</strong><span>Chứng minh khả thi với scope giới hạn</span></div>
+    <div class="flow-card ph3"><small>Phase 3</small><strong>Pilot</strong><span>Tùy chọn: xác thực gần thực tế với user/dữ liệu thật</span></div>
+    <div class="flow-card ph4"><small>Phase 4</small><strong>RFP/RFI & Bid</strong><span>Hồ sơ thầu, proposal, SoW, giá</span></div>
+    <div class="flow-card ph5"><small>Phase 5</small><strong>Contract & Handoff</strong><span>Ký HĐ và bàn giao Delivery</span></div>
+  </div>
+
+  <hr class="divider">
+  <h3>Vai trò chính</h3>
+  <table>
+    <thead><tr><th>Vai trò</th><th>Trách nhiệm chính</th><th>Điểm chạm với KH</th><th>Cách báo cáo/phê duyệt</th></tr></thead>
+    <tbody>
+      <tr><td><span class="role-tag role-s">Sales</span></td><td>Sở hữu quan hệ, thương mại, pipeline, CRM, đàm phán</td><td>Economic buyer, sponsor, procurement</td><td>Cung cấp Opportunity Brief, nhận proposal/tài liệu từ Consultant</td></tr>
+      <tr><td><span class="role-tag role-c">Consultant</span></td><td>Thiết kế giải pháp, demo, scope POC/Pilot, SoW, hồ sơ RFP/RFI/Bid</td><td>Technical champion, nghiệp vụ, IT, vận hành</td><td>Weekly status mỗi thứ Sáu, bắt buộc sign-off tại gate</td></tr>
+      <tr><td><span class="role-tag role-d">Delivery</span></td><td>Build POC/Pilot/Bid POC theo scope do Consultant chốt</td><td>Thường không giao tiếp trực tiếp trong presales, trừ khi được điều phối</td><td>Báo tiến độ cho Consultant/PM theo milestone</td></tr>
+      <tr><td><span class="role-tag role-m">Manager</span></td><td>Phân bổ nguồn lực, QA, quản lý rủi ro, duyệt gate</td><td>Escalation hoặc deal chiến lược</td><td>Duyệt gate, review tracker, unblock trong 24-48h</td></tr>
+    </tbody>
+  </table>
+
+  <div class="grid-2 mt-32">
+    <div><h3 style="color:var(--green)">Nên làm</h3><ul class="activity-list"><li>✓ Bắt đầu từ pain point KH</li><li>✓ Định nghĩa AC đo được trước khi build</li><li>✓ Review SoW với Delivery trước khi gửi KH</li><li>✓ Gửi status update hàng tuần</li><li>✓ Escalate blocker trong 24h</li><li>✓ Đồng bộ Sales trước mọi thông điệp gửi KH</li></ul></div>
+    <div><h3 style="color:var(--coral)">Không nên làm</h3><ul class="activity-list"><li>✗ Hứa deadline/tính năng khi chưa có input Delivery</li><li>✗ Build POC khi chưa có AC</li><li>✗ Bỏ qua gate để “tiết kiệm thời gian”</li><li>✗ Đề xuất scope mới chưa từng triển khai mà không review</li><li>✗ Để deal im lặng quá 1 tuần</li><li>✗ Demo POC khi chưa pass QA nội bộ</li></ul></div>
+  </div>
+</div>
+</div>
+
+<div id="process" class="tab-content">
+<div class="section-wrap">
+  <h2 class="section-title">Sơ đồ quy trình</h2>
+  <p style="color:var(--muted)">Luồng dưới đây mô tả cách một cơ hội đi từ tiếp nhận đến hợp đồng và bàn giao. Các ô vàng là điểm cần review/phê duyệt.</p>
+  <div class="flow">
+    <div class="flow-card ph0"><small>0 · Intake</small><strong>Opportunity Brief</strong><span>Sales gửi brief, Consultant đánh giá ICP</span></div>
+    <div class="flow-card ph1"><small>1 · Discovery</small><strong>Workshop & Use Case</strong><span>Làm rõ pain, data, stakeholder, success metrics</span></div>
+    <div class="flow-card ph2"><small>2 · POC</small><strong>Scope + Build + Demo</strong><span>Delivery build, Consultant QA/demo</span></div>
+    <div class="flow-card ph3"><small>3 · Pilot</small><strong>User Validation</strong><span>Tùy chọn khi KH cần kiểm chứng thực tế</span></div>
+    <div class="flow-card ph4"><small>4 · RFP/RFI</small><strong>Proposal & Bid</strong><span>SoW, hồ sơ kỹ thuật, giá, nộp thầu</span></div>
+    <div class="flow-card ph5"><small>5 · Contract</small><strong>Ký & Handoff</strong><span>Finalize HĐ, bàn giao Delivery</span></div>
+  </div>
+
+  <h3 class="mt-32">Bảng tóm tắt giai đoạn</h3>
+  <table>
+    <thead><tr><th>Giai đoạn</th><th>Thời lượng</th><th>PIC chính</th><th>Việc chính</th><th>Đầu ra</th><th>Gate cần duyệt</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge ph0">0 Intake</span></td><td>1-2 ngày</td><td>Sales + Consultant</td><td>Review brief, scoring ICP, assign nguồn lực</td><td>Go/No-Go + Consultant được assign</td><td class="approval">Manager duyệt phân bổ nguồn lực</td></tr>
+      <tr><td><span class="badge ph1">1 Discovery</span></td><td>1-2 tuần</td><td>Consultant</td><td>Workshop, use case, AC sơ bộ</td><td>Discovery note + POC recommendation</td><td class="approval">Sales/Manager duyệt POC Go</td></tr>
+      <tr><td><span class="badge ph2">2 POC</span></td><td>2-4 tuần</td><td>Consultant + Delivery</td><td>Build scope giới hạn, QA, demo</td><td>POC report + demo</td><td class="approval">Quality review trước demo KH</td></tr>
+      <tr><td><span class="badge ph3">3 Pilot</span></td><td>4-8 tuần</td><td>Delivery</td><td>Full-scope validation với user/dữ liệu thật</td><td>Pilot result + commercial decision</td><td class="approval">KH/Manager chốt có đi tiếp</td></tr>
+      <tr><td><span class="badge ph4">4 RFP/RFI</span></td><td>2-5 tuần</td><td>Sales + Consultant</td><td>Proposal, SoW, bid documents</td><td>Commercial proposal / bid submission</td><td class="approval">Manager duyệt SoW + pricing</td></tr>
+      <tr><td><span class="badge ph5">5 Contract</span></td><td>1-2 tuần</td><td>Sales</td><td>Đàm phán, ký, handoff</td><td>Signed contract + handoff brief</td><td class="approval">SoW sign-off + Delivery PM nhận brief</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout warn mt-24"><strong>Nguyên tắc quay lại:</strong> quay lại giai đoạn trước không phải thất bại. Đó là cơ chế kiểm soát để tránh demo sai, scope sai hoặc ký sai.</div>
+  <h3>Backtrack theo gate</h3>
+  <table>
+    <thead><tr><th>Gate</th><th>Khi nào “No”</th><th>Quay lại đâu</th><th>Thời gian reset</th></tr></thead>
+    <tbody>
+      <tr><td>Gate 0 · Resource</td><td>Không đủ nguồn lực hoặc cơ hội không fit</td><td>Quay lại Sales qualification</td><td>1-2 ngày</td></tr>
+      <tr><td>Gate 1 · POC Go</td><td>Use case không rõ, AC chưa đo được</td><td>Discovery</td><td>3-5 ngày</td></tr>
+      <tr><td>Gate 2 · Demo readiness</td><td>POC chưa pass QA, dữ liệu sai</td><td>POC rescope hoặc rebuild</td><td>3-10 ngày</td></tr>
+      <tr><td>Gate 4 · Proposal</td><td>RFP lộ gap scope hoặc SoW chưa delivery-ready</td><td>Mini-Discovery hoặc POC bổ sung</td><td>3-7 ngày</td></tr>
+      <tr><td>Gate 5 · Contract</td><td>Đàm phán vướng scope, giá, SLA</td><td>Rework SoW/pricing</td><td>2-5 ngày</td></tr>
+    </tbody>
+  </table>
+</div>
+</div>
+
+<div id="playbooks" class="tab-content">
+<div class="section-wrap">
+  <h2 class="section-title">Playbook theo từng giai đoạn</h2>
+  <div class="sub-tab-nav">
+    <button class="sub-tab-btn active" onclick="switchSubTab('pb','ph0',this)">Phase 0</button>
+    <button class="sub-tab-btn" onclick="switchSubTab('pb','ph1',this)">Phase 1</button>
+    <button class="sub-tab-btn" onclick="switchSubTab('pb','ph2',this)">Phase 2</button>
+    <button class="sub-tab-btn" onclick="switchSubTab('pb','ph3',this)">Phase 3</button>
+    <button class="sub-tab-btn" onclick="switchSubTab('pb','ph4',this)">Phase 4</button>
+    <button class="sub-tab-btn" onclick="switchSubTab('pb','ph5',this)">Phase 5</button>
+  </div>
+
+  <div id="pb-ph0" class="sub-tab-content active"><script type="application/json" class="phase-data">{"badge":"Phase 0","class":"ph0","title":"Intake & Qualification","meta":"1-2 ngày · Owner: Sales + Consultant · Gate: Manager assign","objective":"Xác định cơ hội có đáng đầu tư thời gian tư vấn không, chọn đúng consultant và đồng bộ Sales/Consultant trước khi gặp KH.","inputs":["Opportunity Brief từ Sales","Thông tin KH, ngành, pain point, ngân sách/timeline","ICP scoring hoặc tiêu chí fit"],"activities":["Sales gửi brief và context thương mại","Consultant đánh giá fit về use case, dữ liệu, sản phẩm","Manager kiểm tra tải nguồn lực","Gate 0: Go/No-Go và assign chính thức"],"deliverables":["Go/No-Go","Consultant được assign","Brief được lưu"],"gate":"Manager duyệt phân bổ nguồn lực trước khi Consultant đầu tư sâu.","lessons":["Brief thiếu context sẽ làm Discovery chậm","Nếu chưa rõ người quyết định phía KH, cần yêu cầu Sales bổ sung"]}</script></div>
+  <div id="pb-ph1" class="sub-tab-content"><script type="application/json" class="phase-data">{"badge":"Phase 1","class":"ph1","title":"Discovery & Use Case Design","meta":"1-2 tuần · Owner: Consultant · Gate: POC Go","objective":"Chuyển nhu cầu mơ hồ thành use case, dữ liệu, stakeholder và tiêu chí thành công có thể đo được.","inputs":["Brief đã duyệt","Stakeholder nghiệp vụ và IT","Tài liệu hiện trạng/quy trình/dữ liệu mẫu"],"activities":["Workshop với KH","Làm rõ pain, quy trình, dữ liệu, tích hợp","Xác định success metrics và AC sơ bộ","Đề xuất POC/Pilot hoặc No-Go"],"deliverables":["Discovery note","Use case map","POC recommendation"],"gate":"Sales/Manager review POC Go trước khi cam kết build hoặc demo custom.","lessons":["Workshop thiếu IT thì dễ bỏ sót tích hợp","AC mơ hồ là nguyên nhân chính gây tranh cãi nghiệm thu"]}</script></div>
+  <div id="pb-ph2" class="sub-tab-content"><script type="application/json" class="phase-data">{"badge":"Phase 2","class":"ph2","title":"POC — Chứng minh khả thi","meta":"2-4 tuần · Owner: Consultant + Delivery · Gate: Quality review","objective":"Chứng minh giải pháp khả thi trong phạm vi giới hạn, chưa phải triển khai production.","inputs":["Scope POC","AC đo được","Dữ liệu mẫu/thật được phép dùng","Nguồn lực Delivery/Product"],"activities":["Chốt scope in/out","Delivery build hoặc config","SIT/QA nội bộ","Consultant chuẩn bị demo và report","Demo KH sau khi pass QA"],"deliverables":["POC build","POC report","Demo script","QA checklist"],"gate":"Quality review bắt buộc trước khi demo cho KH.","lessons":["Không demo khi QA chưa pass","POC phải có report số liệu, không chỉ trình diễn cảm tính"]}</script></div>
+  <div id="pb-ph3" class="sub-tab-content"><script type="application/json" class="phase-data">{"badge":"Phase 3","class":"ph3","title":"Pilot — Xác thực gần thực tế","meta":"4-8 tuần · Owner: Delivery · Gate: Commercial decision","objective":"Xác thực giải pháp với dữ liệu, user hoặc quy trình gần thực tế trước khi KH ra quyết định thương mại.","inputs":["Kết quả POC","Pilot scope/full AC","User nhóm thử nghiệm","Văn bản xác nhận Pilot"],"activities":["Chi tiết hóa WBS/milestone","Triển khai môi trường pilot","User test/UAT","Ghi gap so với production","Chốt commercial next step"],"deliverables":["Pilot result","UAT record","Gap list","Commercial recommendation"],"gate":"KH và Manager chốt có đi tiếp RFP/HĐ hay cần điều chỉnh scope.","lessons":["Pilot không có tiêu chí pass/fail sẽ kéo dài vô hạn","Mọi thay đổi scope cần ghi bằng văn bản"]}</script></div>
+  <div id="pb-ph4" class="sub-tab-content"><script type="application/json" class="phase-data">{"badge":"Phase 4","class":"ph4","title":"RFP/RFI & Bid","meta":"2-5 tuần · Owner: Sales + Consultant · Gate: Proposal sign-off","objective":"Biến kết quả tư vấn/POC/Pilot thành hồ sơ thầu hoặc proposal có tính cạnh tranh và đúng cam kết.","inputs":["RFP/RFI","Kết quả POC/Pilot","Case study, CV, năng lực Delivery/Product","Chiến lược giá"],"activities":["Bid/No-Bid trong 24-48h","Phân tích compliance matrix","Soạn technical proposal và SoW","Review giá/scope với Delivery/Manager","Nộp hồ sơ và log Q&A"],"deliverables":["Proposal","SoW","Compliance matrix","Bid submission"],"gate":"Manager duyệt SoW + pricing trước khi nộp/gửi KH.","lessons":["Đừng copy proposal cũ mà không map RFP","Metric cam kết không được vượt năng lực đã chứng minh"]}</script></div>
+  <div id="pb-ph5" class="sub-tab-content"><script type="application/json" class="phase-data">{"badge":"Phase 5","class":"ph5","title":"Contract & Delivery Handoff","meta":"1-2 tuần · Owner: Sales · Gate: HĐ + handoff","objective":"Chốt hợp đồng có thể triển khai được và bàn giao đầy đủ context cho Delivery.","inputs":["Proposal/SoW đã chốt","Điều khoản thương mại/pháp lý","AC/SLA/milestone","Thông tin contact KH"],"activities":["Đàm phán điều khoản","Consultant review phụ lục kỹ thuật","Delivery review resource/SLA","Ký hợp đồng","Handoff package cho PM"],"deliverables":["Signed contract","Technical appendix","Handoff brief","Kickoff plan"],"gate":"SoW/phụ lục kỹ thuật phải được sign-off; Delivery PM xác nhận đã nhận đủ brief.","lessons":["Handover miệng khiến Delivery thiếu context","Scope/SLA thay đổi khi đàm phán phải được kỹ thuật review lại"]}</script></div>
+</div>
+</div>
+
+<div id="oversight" class="tab-content">
+<div class="section-wrap">
+  <h2 class="section-title">Quản trị & giám sát</h2>
+  <div class="grid-2">
+    <div class="card"><h3>Manager cần nhìn gì mỗi tuần?</h3><ul class="checklist"><li><span class="check-box"></span>Deal đang ở phase nào, có bị kẹt quá SLA không?</li><li><span class="check-box"></span>Gate nào sắp cần phê duyệt?</li><li><span class="check-box"></span>Rủi ro scope, dữ liệu, resource, timeline</li><li><span class="check-box"></span>Deal nào cần escalation trong 24-48h</li><li><span class="check-box"></span>Consultant/Delivery có overload không?</li></ul></div>
+    <div class="card approval"><h3>Gate bắt buộc highlight</h3><ul class="activity-list"><li>★ Gate 0: duyệt nguồn lực</li><li>★ Gate 1: duyệt POC Go</li><li>★ Gate 2: quality review trước demo KH</li><li>★ Gate 4: duyệt SoW + pricing trước khi gửi/nộp</li><li>★ Gate 5: sign-off phụ lục kỹ thuật và handoff</li></ul></div>
+  </div>
+  <h3 class="mt-32">Mẫu weekly status ngắn</h3>
+  <table><thead><tr><th>Mục</th><th>Nội dung cần báo</th></tr></thead><tbody><tr><td>Deal / KH</td><td>Tên KH, phase hiện tại, PIC</td></tr><tr><td>Tuần này đã làm</td><td>Workshop/demo/review/draft nào đã xong</td></tr><tr><td>Tuần tới</td><td>Việc tiếp theo, deadline, người phụ trách</td></tr><tr><td>Rủi ro</td><td>Scope, dữ liệu, resource, stakeholder, pháp lý</td></tr><tr><td>Cần Manager</td><td>Phê duyệt, unblock, escalation, tham gia họp</td></tr></tbody></table>
+</div>
+</div>
+
+<div id="quality" class="tab-content">
+<div class="section-wrap">
+  <h2 class="section-title">Checklist chất lượng</h2>
+  <div class="grid-3">
+    <div class="card-sm"><h3>Trước workshop</h3><ul class="checklist"><li><span class="check-box"></span>Có agenda gửi trước</li><li><span class="check-box"></span>Có stakeholder nghiệp vụ + IT</li><li><span class="check-box"></span>Có câu hỏi về dữ liệu/tích hợp</li><li><span class="check-box"></span>Sales và Consultant thống nhất thông điệp</li></ul></div>
+    <div class="card-sm"><h3>Trước demo/POC</h3><ul class="checklist"><li><span class="check-box"></span>Scope in/out rõ</li><li><span class="check-box"></span>AC đo được</li><li><span class="check-box"></span>QA/SIT pass</li><li><span class="check-box"></span>Demo script và Q&A sẵn sàng</li></ul></div>
+    <div class="card-sm"><h3>Trước proposal/HĐ</h3><ul class="checklist"><li><span class="check-box"></span>SoW khớp RFP/POC</li><li><span class="check-box"></span>Delivery review effort/SLA</li><li><span class="check-box"></span>Pricing được duyệt</li><li><span class="check-box"></span>Điều kiện nghiệm thu rõ</li></ul></div>
+  </div>
+  <div class="callout warn mt-24"><strong>Rule:</strong> nếu tài liệu sẽ gửi KH hoặc tạo cam kết pháp lý/thương mại, phải có review trước. Không gửi bản “gần xong” khi chưa qua owner phù hợp.</div>
+</div>
+</div>
+
+<div id="rfp" class="tab-content">
+<div class="section-wrap">
+  <h2 class="section-title">Hướng dẫn RFP / RFI / Bid</h2>
+  <div class="callout warn">Không phải RFP nào cũng nên tham gia. Một RFP không phù hợp có thể tiêu tốn 40-80 giờ consultant. Cần Bid/No-Bid trong 24-48h.</div>
+  <h3>Khung quyết định Bid / No-Bid</h3>
+  <table>
+    <thead><tr><th>Câu hỏi</th><th>Nếu Có</th><th>Nếu Không</th></tr></thead>
+    <tbody>
+      <tr><td>Đã có quan hệ với KH?</td><td>Tín hiệu tốt để bid</td><td>RFP lạnh, cần cân nhắc thêm</td></tr>
+      <tr><td>Mình có ảnh hưởng yêu cầu không?</td><td>Xác suất thắng cao hơn</td><td>Có thể RFP viết cho đối thủ</td></tr>
+      <tr><td>Fit kỹ thuật >70%?</td><td>Có thể tham gia</td><td>Không nên cam kết quá khả năng</td></tr>
+      <tr><td>Có case study cùng ngành?</td><td>Lợi thế mạnh</td><td>Cần chứng cứ thay thế</td></tr>
+      <tr><td>Deal size xứng đáng effort?</td><td>Ưu tiên</td><td>Phải cân nhắc chi phí cơ hội</td></tr>
+      <tr><td>Timeline đủ review?</td><td>Có thể làm chất lượng</td><td>Rủi ro nộp vội, lỗi format/scope</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="mt-32">Best practices khi viết hồ sơ</h3>
+  <div class="grid-2">
+    <div class="card-sm"><strong>Dẫn bằng outcome</strong><p style="font-size:13px;color:var(--muted);margin-top:6px">Mở đầu bằng kết quả KH có thể đạt, không mở đầu bằng lịch sử công ty.</p></div>
+    <div class="card-sm"><strong>Dùng đúng ngôn ngữ RFP</strong><p style="font-size:13px;color:var(--muted);margin-top:6px">Nếu KH gọi là “intelligent virtual agent”, hãy dùng đúng cụm đó.</p></div>
+    <div class="card-sm"><strong>Compliance matrix</strong><p style="font-size:13px;color:var(--muted);margin-top:6px">Map từng yêu cầu sang phần trả lời và trạng thái đáp ứng.</p></div>
+    <div class="card-sm"><strong>POC evidence là vàng</strong><p style="font-size:13px;color:var(--muted);margin-top:6px">Số liệu thật thuyết phục hơn claim tính năng.</p></div>
+    <div class="card-sm"><strong>Dễ scan</strong><p style="font-size:13px;color:var(--muted);margin-top:6px">Evaluator cần nhìn thấy thông điệp chính trong 10 giây.</p></div>
+    <div class="card-sm"><strong>Giá rõ ràng</strong><p style="font-size:13px;color:var(--muted);margin-top:6px">Nêu rõ mô hình giá, bao gồm/không bao gồm gì, điều kiện thay đổi.</p></div>
+  </div>
+</div>
+</div>
+</main>
+
+<script>
+function switchTab(id,btn){document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));document.getElementById(id).classList.add('active');btn.classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+function switchSubTab(group,id,btn){const wrap=document.getElementById(group==='pb'?'playbooks':'quality');wrap.querySelectorAll('.sub-tab-content').forEach(t=>t.classList.remove('active'));wrap.querySelectorAll('.sub-tab-btn').forEach(b=>b.classList.remove('active'));document.getElementById(group+'-'+id).classList.add('active');btn.classList.add('active');renderPhaseCards();}
+function renderPhaseCards(){document.querySelectorAll('.phase-data').forEach(node=>{const host=node.parentElement;if(host.dataset.rendered)return;const d=JSON.parse(node.textContent);host.insertAdjacentHTML('beforeend',`<div class="phase-header ${d.class}" style="border-color:#e2e8f0"><div><span class="badge ${d.class}" style="margin-bottom:8px">${d.badge}</span><h3 style="font-size:22px;margin-bottom:4px">${d.title}</h3><div style="color:var(--muted);font-size:14px">${d.meta}</div></div><div class="phase-num">${d.badge.replace('Phase ','')}</div></div><div class="grid-2"><div class="card"><h4>Mục tiêu</h4><p style="color:var(--muted);font-size:14px">${d.objective}</p><h4 class="mt-20">Đầu vào</h4><ul class="activity-list">${d.inputs.map(x=>`<li>— ${x}</li>`).join('')}</ul><h4 class="mt-20">Việc cần làm</h4><ul class="activity-list">${d.activities.map(x=>`<li>— ${x}</li>`).join('')}</ul></div><div class="card"><h4>Đầu ra</h4><div class="deliverable-list">${d.deliverables.map(x=>`<span class="deliverable-item">${x}</span>`).join('')}</div><div class="gate-box"><div class="gate-title">★ Cần review / phê duyệt</div><p style="margin:0;font-size:14px">${d.gate}</p></div><h4 class="mt-24">Kinh nghiệm</h4><ul class="activity-list">${d.lessons.map(x=>`<li>• ${x}</li>`).join('')}</ul></div></div>`);host.dataset.rendered='1';});}
+renderPhaseCards();
+</script>
+</body>
+</html>
+

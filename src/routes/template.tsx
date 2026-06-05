@@ -1,10 +1,23 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Download, FileText } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { AppLayout } from "@/components/AppLayout";
+import { AddDocButton } from "@/components/AddDocButton";
 import { TagBadge } from "@/components/TagBadge";
-import { MOCK_DOCS } from "@/lib/mock-data";
+import { AttachmentList } from "@/components/ResourceAttachments";
+import { listDocs } from "@/lib/api/docs.functions";
+import { useDocs } from "@/lib/queries";
+import { requireUserRoute } from "@/lib/auth-route-guard";
 
 export const Route = createFileRoute("/template")({
+  beforeLoad: ({ context }) => requireUserRoute(context),
+  loader: async ({ context }) => {
+    const docs = await listDocs();
+    await context.queryClient.ensureQueryData({
+      queryKey: ["docs"],
+      queryFn: () => Promise.resolve(docs),
+    });
+    return docs;
+  },
   head: () => ({
     meta: [{ title: "Thư viện Template — Kho tri thức Consultant AI" }],
   }),
@@ -20,15 +33,27 @@ function TemplatePage() {
 }
 
 function Templates() {
-  const templates = MOCK_DOCS.filter((d) => d.type === "Template");
+  const { data: docs = [], isLoading } = useDocs();
+  const templates = docs.filter((d) => d.type === "Template");
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center py-20 text-muted-foreground">
+        <Loader2 className="h-6 w-6 animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-6 lg:py-8">
-      <div className="mb-5">
-        <h1 className="text-2xl font-bold">Thư viện Template</h1>
-        <p className="text-sm text-muted-foreground">
-          Các mẫu chuẩn để dùng nhanh. Bấm tệp để tải về.
-        </p>
+      <div className="mb-5 flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h1 className="text-2xl font-bold">Thư viện Template</h1>
+          <p className="text-sm text-muted-foreground">
+            Các mẫu chuẩn để dùng nhanh. Tải tệp hoặc mở link tài nguyên đính kèm.
+          </p>
+        </div>
+        <AddDocButton label="Thêm template mới" docType="Template" />
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -53,24 +78,9 @@ function Templates() {
               {t.phases.map((p) => <TagBadge key={p} kind="phase" value={p} />)}
             </div>
 
-            {t.attachments.length > 0 ? (
-              <div className="mt-4 space-y-2">
-                {t.attachments.map((a) => (
-                  <button
-                    key={a.id}
-                    className="flex w-full items-center justify-between rounded-md border bg-background px-3 py-2 text-sm hover:bg-accent"
-                  >
-                    <span className="flex min-w-0 items-center gap-2">
-                      <FileText className="h-4 w-4 shrink-0 text-muted-foreground" />
-                      <span className="truncate">{a.fileName}</span>
-                    </span>
-                    <Download className="h-4 w-4 text-muted-foreground" />
-                  </button>
-                ))}
-              </div>
-            ) : (
-              <p className="mt-4 text-xs text-muted-foreground">Chưa có tệp đính kèm.</p>
-            )}
+            <div className="mt-4">
+              <AttachmentList attachments={t.attachments} compact />
+            </div>
           </div>
         ))}
       </div>

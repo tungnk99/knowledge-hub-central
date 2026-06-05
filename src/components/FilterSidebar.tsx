@@ -4,11 +4,15 @@ import {
   PRODUCTS,
   PHASES,
   DOC_TYPES,
+  DOC_CATEGORIES,
+  FILE_FORMATS,
   DOC_STATUSES,
   type Vertical,
   type Product,
   type Phase,
   type DocType,
+  type DocCategory,
+  type FileFormat,
   type DocStatus,
 } from "@/lib/taxonomy";
 
@@ -17,6 +21,8 @@ export interface FilterState {
   products: Product[];
   phases: Phase[];
   types: DocType[];
+  categories: DocCategory[];
+  fileFormats: FileFormat[];
   statuses: DocStatus[];
 }
 
@@ -25,6 +31,8 @@ export const emptyFilter: FilterState = {
   products: [],
   phases: [],
   types: [],
+  categories: [],
+  fileFormats: [],
   statuses: [],
 };
 
@@ -47,6 +55,8 @@ export function FilterSidebar({ value, onChange }: Props) {
     { title: "Sản phẩm", key: "products", options: PRODUCTS },
     { title: "Giai đoạn", key: "phases", options: PHASES },
     { title: "Loại tài liệu", key: "types", options: DOC_TYPES },
+    { title: "Định dạng file", key: "fileFormats", options: FILE_FORMATS },
+    { title: "Loại nội dung", key: "categories", options: DOC_CATEGORIES },
     { title: "Trạng thái", key: "statuses", options: DOC_STATUSES },
   ];
 
@@ -55,6 +65,8 @@ export function FilterSidebar({ value, onChange }: Props) {
     value.products.length +
     value.phases.length +
     value.types.length +
+    value.categories.length +
+    value.fileFormats.length +
     value.statuses.length;
 
   return (
@@ -110,9 +122,12 @@ export function applyFilters<
     products: string[];
     phases: string[];
     type: string;
+    category: string;
+    fileFormat: string;
     status: string;
     title: string;
     summary: string;
+    body?: string;
   },
 >(docs: T[], filter: FilterState, query: string): T[] {
   const q = query.trim().toLowerCase();
@@ -121,8 +136,14 @@ export function applyFilters<
     if (filter.products.length && !d.products.some((v) => filter.products.includes(v as Product))) return false;
     if (filter.phases.length && !d.phases.some((v) => filter.phases.includes(v as Phase))) return false;
     if (filter.types.length && !filter.types.includes(d.type as DocType)) return false;
+    if (filter.categories.length && !filter.categories.includes(d.category as DocCategory)) return false;
+    if (filter.fileFormats.length && !filter.fileFormats.includes(d.fileFormat as FileFormat)) return false;
     if (filter.statuses.length && !filter.statuses.includes(d.status as DocStatus)) return false;
-    if (q && !(`${d.title} ${d.summary}`.toLowerCase().includes(q))) return false;
+    if (q) {
+      const haystack =
+        `${d.title} ${d.summary} ${d.body ?? ""} ${d.category} ${d.fileFormat} ${d.type}`.toLowerCase();
+      if (!haystack.includes(q)) return false;
+    }
     return true;
   });
 }

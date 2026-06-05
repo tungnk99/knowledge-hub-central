@@ -4,11 +4,15 @@ import {
   productClass,
   phaseClass,
   typeClass,
+  categoryClass,
+  fileFormatClass,
   statusClass,
   type Vertical,
   type Product,
   type Phase,
   type DocType,
+  type DocCategory,
+  type FileFormat,
   type DocStatus,
 } from "@/lib/taxonomy";
 
@@ -17,6 +21,8 @@ type Props =
   | { kind: "product"; value: Product }
   | { kind: "phase"; value: Phase }
   | { kind: "type"; value: DocType }
+  | { kind: "category"; value: DocCategory }
+  | { kind: "fileFormat"; value: FileFormat }
   | { kind: "status"; value: DocStatus };
 
 export function TagBadge(props: Props & { className?: string }) {
@@ -26,6 +32,8 @@ export function TagBadge(props: Props & { className?: string }) {
   else if (kind === "product") cls = productClass[value as Product];
   else if (kind === "phase") cls = phaseClass[value as Phase];
   else if (kind === "type") cls = typeClass[value as DocType];
+  else if (kind === "category") cls = categoryClass[value as DocCategory];
+  else if (kind === "fileFormat") cls = fileFormatClass[value as FileFormat];
   else if (kind === "status") cls = statusClass[value as DocStatus];
 
   return (

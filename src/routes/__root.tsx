@@ -10,7 +10,10 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import { Toaster } from "@/components/ui/sonner";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { fetchSession } from "@/lib/api/auth.functions";
+import type { RouterContext } from "../router";
 
 function NotFoundComponent() {
   return (
@@ -72,7 +75,11 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
-export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+export const Route = createRootRouteWithContext<RouterContext>()({
+  beforeLoad: async () => {
+    const session = await fetchSession();
+    return { user: session.user, role: session.role };
+  },
   head: () => ({
     meta: [
       { charSet: "utf-8" },
@@ -107,6 +114,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <Outlet />
+      <Toaster richColors position="top-right" />
     </QueryClientProvider>
   );
 }

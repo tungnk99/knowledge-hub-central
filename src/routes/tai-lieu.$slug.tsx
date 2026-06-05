@@ -1,15 +1,21 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { ArrowLeft, Copy, Download, FileText, Pencil, CalendarDays, User, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, Copy, Pencil, CalendarDays, User, CheckCircle2 } from "lucide-react";
 import { useState } from "react";
 import { AppLayout } from "@/components/AppLayout";
 import { TagBadge } from "@/components/TagBadge";
-import { MOCK_DOCS, type DocItem } from "@/lib/mock-data";
+import { AttachmentList } from "@/components/ResourceAttachments";
+import { getDocBySlug } from "@/lib/api/docs.functions";
+import type { DocItem } from "@/lib/types";
+import { requireUserRoute } from "@/lib/auth-route-guard";
+import { canEditDoc } from "@/lib/permissions";
+import { Route as RootRoute } from "@/routes/__root";
 
 export const Route = createFileRoute("/tai-lieu/$slug")({
-  loader: ({ params }): DocItem => {
-    const doc = MOCK_DOCS.find((d) => d.slug === params.slug);
+  beforeLoad: ({ context }) => requireUserRoute(context),
+  loader: async ({ params }) => {
+    const doc = await getDocBySlug({ data: { slug: params.slug } });
     if (!doc) throw notFound();
     return doc;
   },
@@ -50,6 +56,7 @@ function DocDetailPage() {
 
 function DocDetail() {
   const doc = Route.useLoaderData() as DocItem;
+  const { role } = RootRoute.useRouteContext();
   const [copied, setCopied] = useState(false);
 
   const copyMd = async () => {
@@ -71,7 +78,8 @@ function DocDetail() {
       <div className="grid gap-6 lg:grid-cols-[1fr_300px]">
         <article>
           <div className="mb-3 flex flex-wrap gap-1.5">
-            <TagBadge kind="type" value={doc.type} />
+            <TagBadge kind="fileFormat" value={doc.fileFormat} />
+            <TagBadge kind="category" value={doc.category} />
             <TagBadge kind="status" value={doc.status} />
           </div>
 
@@ -86,20 +94,23 @@ function DocDetail() {
 
           <div className="mt-6 flex flex-wrap gap-2">
             <button
+              type="button"
               onClick={copyMd}
               className="inline-flex items-center gap-2 rounded-md border bg-card px-3 py-1.5 text-sm font-medium hover:bg-accent"
             >
               {copied ? <CheckCircle2 className="h-4 w-4 text-status-approved-foreground" /> : <Copy className="h-4 w-4" />}
               {copied ? "Đã sao chép" : "Copy dạng Markdown"}
             </button>
-            <Link
-              to="/soan/$id"
-              params={{ id: doc.id }}
-              className="inline-flex items-center gap-2 rounded-md border bg-card px-3 py-1.5 text-sm font-medium hover:bg-accent"
-            >
-              <Pencil className="h-4 w-4" />
-              Chỉnh sửa
-            </Link>
+            {canEditDoc(role, doc.status) && (
+              <Link
+                to="/soan/$id"
+                params={{ id: doc.id }}
+                className="inline-flex items-center gap-2 rounded-md border bg-card px-3 py-1.5 text-sm font-medium hover:bg-accent"
+              >
+                <Pencil className="h-4 w-4" />
+                Chỉnh sửa
+              </Link>
+            )}
           </div>
 
           <div className="prose-doc mt-8">
@@ -119,6 +130,15 @@ function DocDetail() {
           </Panel>
 
           <Panel title="Phân loại">
+            <TagGroup label="Định dạng file">
+              <TagBadge kind="fileFormat" value={doc.fileFormat} />
+            </TagGroup>
+            <TagGroup label="Loại nội dung">
+              <TagBadge kind="category" value={doc.category} />
+            </TagGroup>
+            <TagGroup label="Loại tài liệu">
+              <TagBadge kind="type" value={doc.type} />
+            </TagGroup>
             <TagGroup label="Khối">
               {doc.verticals.map((v) => <TagBadge key={v} kind="vertical" value={v} />)}
             </TagGroup>
@@ -130,26 +150,9 @@ function DocDetail() {
             </TagGroup>
           </Panel>
 
-          {doc.attachments.length > 0 && (
-            <Panel title="Tệp đính kèm">
-              <ul className="space-y-2">
-                {doc.attachments.map((a) => (
-                  <li key={a.id} className="flex items-center justify-between gap-2 rounded-md border p-2 text-sm">
-                    <span className="flex min-w-0 items-center gap-2">
-                      <FileText className="h-4 w-4 shrink-0 text-muted-foreground" />
-                      <span className="truncate">{a.fileName}</span>
-                    </span>
-                    <button
-                      className="rounded-md p-1 text-muted-foreground hover:bg-accent hover:text-foreground"
-                      title="Tải về"
-                    >
-                      <Download className="h-4 w-4" />
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </Panel>
-          )}
+          <Panel title="Tài nguyên đính kèm">
+            <AttachmentList attachments={doc.attachments} />
+          </Panel>
         </aside>
       </div>
     </div>

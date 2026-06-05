@@ -50,12 +50,16 @@
   /* Phase (giai đoạn) */
   --color-phase-consult: var(--phase-consult);
   --color-phase-consult-foreground: var(--phase-consult-foreground);
+  --color-phase-approach: var(--phase-approach);
+  --color-phase-approach-foreground: var(--phase-approach-foreground);
   --color-phase-poc: var(--phase-poc);
   --color-phase-poc-foreground: var(--phase-poc-foreground);
-  --color-phase-effort: var(--phase-effort);
-  --color-phase-effort-foreground: var(--phase-effort-foreground);
   --color-phase-bid: var(--phase-bid);
   --color-phase-bid-foreground: var(--phase-bid-foreground);
+  --color-phase-contract: var(--phase-contract);
+  --color-phase-contract-foreground: var(--phase-contract-foreground);
+  --color-phase-delivery: var(--phase-delivery);
+  --color-phase-delivery-foreground: var(--phase-delivery-foreground);
 
   /* Type (loại tài liệu) */
   --color-type-standard: var(--type-standard);
@@ -66,6 +70,48 @@
   --color-type-lesson-foreground: var(--type-lesson-foreground);
   --color-type-playbook: var(--type-playbook);
   --color-type-playbook-foreground: var(--type-playbook-foreground);
+
+  /* Format (định dạng tài liệu) */
+  --color-format-slide: var(--format-slide);
+  --color-format-slide-foreground: var(--format-slide-foreground);
+  --color-format-rfp: var(--format-rfp);
+  --color-format-rfp-foreground: var(--format-rfp-foreground);
+  --color-format-survey: var(--format-survey);
+  --color-format-survey-foreground: var(--format-survey-foreground);
+  --color-format-proposal: var(--format-proposal);
+  --color-format-proposal-foreground: var(--format-proposal-foreground);
+  --color-format-report: var(--format-report);
+  --color-format-report-foreground: var(--format-report-foreground);
+  --color-format-checklist: var(--format-checklist);
+  --color-format-checklist-foreground: var(--format-checklist-foreground);
+  --color-format-sow: var(--format-sow);
+  --color-format-sow-foreground: var(--format-sow-foreground);
+  --color-format-discovery: var(--format-discovery);
+  --color-format-discovery-foreground: var(--format-discovery-foreground);
+  --color-format-poc: var(--format-poc);
+  --color-format-poc-foreground: var(--format-poc-foreground);
+  --color-format-other: var(--format-other);
+  --color-format-other-foreground: var(--format-other-foreground);
+
+  /* File format (PDF, DOCX, ...) */
+  --color-file-pdf: var(--file-pdf);
+  --color-file-pdf-foreground: var(--file-pdf-foreground);
+  --color-file-docx: var(--file-docx);
+  --color-file-docx-foreground: var(--file-docx-foreground);
+  --color-file-xlsx: var(--file-xlsx);
+  --color-file-xlsx-foreground: var(--file-xlsx-foreground);
+  --color-file-pptx: var(--file-pptx);
+  --color-file-pptx-foreground: var(--file-pptx-foreground);
+  --color-file-csv: var(--file-csv);
+  --color-file-csv-foreground: var(--file-csv-foreground);
+  --color-file-zip: var(--file-zip);
+  --color-file-zip-foreground: var(--file-zip-foreground);
+  --color-file-link: var(--file-link);
+  --color-file-link-foreground: var(--file-link-foreground);
+  --color-file-md: var(--file-md);
+  --color-file-md-foreground: var(--file-md-foreground);
+  --color-file-other: var(--file-other);
+  --color-file-other-foreground: var(--file-other-foreground);
 
   /* Status */
   --color-status-draft: var(--status-draft);
@@ -123,15 +169,19 @@
   --product-cv: oklch(0.92 0.07 190);
   --product-cv-foreground: oklch(0.32 0.12 200);
 
-  /* Phases: Tư vấn=indigo nhạt, PoC=hồng, Effort=vàng, Thầu=đỏ-cam */
+  /* Phases — MTQT 6 giai đoạn */
+  --phase-approach: oklch(0.93 0.06 220);
+  --phase-approach-foreground: oklch(0.32 0.12 230);
   --phase-consult: oklch(0.93 0.06 270);
   --phase-consult-foreground: oklch(0.35 0.14 270);
   --phase-poc: oklch(0.93 0.07 340);
   --phase-poc-foreground: oklch(0.38 0.16 340);
-  --phase-effort: oklch(0.94 0.1 95);
-  --phase-effort-foreground: oklch(0.4 0.13 85);
   --phase-bid: oklch(0.92 0.09 35);
   --phase-bid-foreground: oklch(0.4 0.17 35);
+  --phase-contract: oklch(0.94 0.1 95);
+  --phase-contract-foreground: oklch(0.4 0.13 85);
+  --phase-delivery: oklch(0.92 0.08 150);
+  --phase-delivery-foreground: oklch(0.32 0.12 155);
 
   /* Types */
   --type-standard: oklch(0.45 0.15 255);
@@ -142,6 +192,48 @@
   --type-lesson-foreground: oklch(0.38 0.13 75);
   --type-playbook: oklch(0.93 0.06 160);
   --type-playbook-foreground: oklch(0.32 0.1 160);
+
+  /* Formats */
+  --format-slide: oklch(0.92 0.08 300);
+  --format-slide-foreground: oklch(0.35 0.16 300);
+  --format-rfp: oklch(0.93 0.1 45);
+  --format-rfp-foreground: oklch(0.4 0.16 45);
+  --format-survey: oklch(0.92 0.07 230);
+  --format-survey-foreground: oklch(0.32 0.12 230);
+  --format-proposal: oklch(0.92 0.07 190);
+  --format-proposal-foreground: oklch(0.32 0.11 190);
+  --format-report: oklch(0.93 0.06 255);
+  --format-report-foreground: oklch(0.32 0.12 255);
+  --format-checklist: oklch(0.93 0.04 260);
+  --format-checklist-foreground: oklch(0.35 0.03 260);
+  --format-sow: oklch(0.92 0.08 280);
+  --format-sow-foreground: oklch(0.34 0.14 280);
+  --format-discovery: oklch(0.93 0.06 270);
+  --format-discovery-foreground: oklch(0.34 0.12 270);
+  --format-poc: oklch(0.93 0.08 340);
+  --format-poc-foreground: oklch(0.38 0.15 340);
+  --format-other: oklch(0.93 0.01 260);
+  --format-other-foreground: oklch(0.38 0.02 260);
+
+  /* File formats */
+  --file-pdf: oklch(0.93 0.08 25);
+  --file-pdf-foreground: oklch(0.4 0.16 25);
+  --file-docx: oklch(0.92 0.07 245);
+  --file-docx-foreground: oklch(0.32 0.14 250);
+  --file-xlsx: oklch(0.93 0.08 150);
+  --file-xlsx-foreground: oklch(0.32 0.12 150);
+  --file-pptx: oklch(0.93 0.1 45);
+  --file-pptx-foreground: oklch(0.4 0.16 45);
+  --file-csv: oklch(0.93 0.04 260);
+  --file-csv-foreground: oklch(0.35 0.03 260);
+  --file-zip: oklch(0.92 0.06 280);
+  --file-zip-foreground: oklch(0.34 0.12 280);
+  --file-link: oklch(0.92 0.07 190);
+  --file-link-foreground: oklch(0.32 0.11 190);
+  --file-md: oklch(0.93 0.05 220);
+  --file-md-foreground: oklch(0.32 0.1 230);
+  --file-other: oklch(0.93 0.01 260);
+  --file-other-foreground: oklch(0.38 0.02 260);
 
   /* Status: Nháp=xám, Đã review=vàng, Đã duyệt=xanh */
   --status-draft: oklch(0.92 0.005 260);
@@ -208,3 +300,99 @@
 }
 .prose-doc th { background: var(--color-muted); font-weight: 600; }
 .prose-doc a { color: var(--color-primary); text-decoration: underline; }
+.prose-doc img {
+  max-width: 100%;
+  height: auto;
+  margin: 1rem 0;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.08);
+}
+
+/* Compact markdown inside amber approval-review box */
+.prose-review {
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+.prose-review > :first-child { margin-top: 0; }
+.prose-review > :last-child { margin-bottom: 0; }
+.prose-review p { margin: 0.375rem 0; }
+.prose-review ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+  margin: 0.375rem 0;
+}
+.prose-review ol {
+  list-style: decimal;
+  padding-left: 1.25rem;
+  margin: 0.375rem 0;
+}
+.prose-review li { margin: 0.25rem 0; }
+.prose-review li::marker { color: rgb(180 83 9); }
+.dark .prose-review li::marker { color: rgb(251 191 36); }
+.prose-review strong { font-weight: 600; }
+.prose-review a {
+  color: rgb(180 83 9);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.dark .prose-review a { color: rgb(252 211 77); }
+.prose-review a:hover { opacity: 0.85; }
+.prose-review code {
+  font-size: 0.8125em;
+  background: rgb(254 243 199 / 0.6);
+  padding: 0.1rem 0.3rem;
+  border-radius: 0.25rem;
+}
+.dark .prose-review code { background: rgb(120 53 15 / 0.4); }
+
+/* Roadmap graph — inspired by roadmap.sh */
+.roadmap-canvas {
+  background-color: #0f172a;
+  background-image: radial-gradient(circle, #334155 1px, transparent 1px);
+  background-size: 22px 22px;
+  overflow-anchor: none;
+}
+
+.roadmap-node {
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 6px;
+  font-size: 11px;
+  line-height: 1.25;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+  z-index: 1;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.roadmap-node-main {
+  padding: 8px 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.roadmap-node-sub {
+  padding: 6px 8px;
+}
+
+.roadmap-node:hover:not(.roadmap-node-active) {
+  filter: brightness(1.15);
+  z-index: 2;
+}
+
+.roadmap-node-active {
+  z-index: 3;
+}
+
+.roadmap-node-in-column {
+  opacity: 0.92;
+}
+
+.roadmap-detail-panel {
+  min-height: 420px;
+}
+
