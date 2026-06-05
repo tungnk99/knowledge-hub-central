@@ -1,5 +1,6 @@
-import { Link, Outlet, useRouterState } from "@tanstack/react-router";
-import { BookOpen, Home, FileText, LayoutTemplate, ClipboardCheck, PlusCircle, Sparkles } from "lucide-react";
+import { Link, useRouterState } from "@tanstack/react-router";
+import type { ReactNode } from "react";
+import { BookOpen, Home, LayoutTemplate, ClipboardCheck, PlusCircle, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -9,7 +10,7 @@ const navItems = [
   { to: "/duyet", label: "Hàng đợi duyệt", icon: ClipboardCheck },
 ];
 
-export function AppLayout() {
+export function AppLayout({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   return (

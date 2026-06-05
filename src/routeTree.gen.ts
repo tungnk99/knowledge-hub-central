@@ -9,38 +9,128 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ThuVienRouteImport } from './routes/thu-vien'
+import { Route as TemplateRouteImport } from './routes/template'
+import { Route as DuyetRouteImport } from './routes/duyet'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as TaiLieuSlugRouteImport } from './routes/tai-lieu.$slug'
+import { Route as SoanIdRouteImport } from './routes/soan.$id'
 
+const ThuVienRoute = ThuVienRouteImport.update({
+  id: '/thu-vien',
+  path: '/thu-vien',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TemplateRoute = TemplateRouteImport.update({
+  id: '/template',
+  path: '/template',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DuyetRoute = DuyetRouteImport.update({
+  id: '/duyet',
+  path: '/duyet',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TaiLieuSlugRoute = TaiLieuSlugRouteImport.update({
+  id: '/tai-lieu/$slug',
+  path: '/tai-lieu/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SoanIdRoute = SoanIdRouteImport.update({
+  id: '/soan/$id',
+  path: '/soan/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/duyet': typeof DuyetRoute
+  '/template': typeof TemplateRoute
+  '/thu-vien': typeof ThuVienRoute
+  '/soan/$id': typeof SoanIdRoute
+  '/tai-lieu/$slug': typeof TaiLieuSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/duyet': typeof DuyetRoute
+  '/template': typeof TemplateRoute
+  '/thu-vien': typeof ThuVienRoute
+  '/soan/$id': typeof SoanIdRoute
+  '/tai-lieu/$slug': typeof TaiLieuSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/duyet': typeof DuyetRoute
+  '/template': typeof TemplateRoute
+  '/thu-vien': typeof ThuVienRoute
+  '/soan/$id': typeof SoanIdRoute
+  '/tai-lieu/$slug': typeof TaiLieuSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/duyet'
+    | '/template'
+    | '/thu-vien'
+    | '/soan/$id'
+    | '/tai-lieu/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/duyet'
+    | '/template'
+    | '/thu-vien'
+    | '/soan/$id'
+    | '/tai-lieu/$slug'
+  id:
+    | '__root__'
+    | '/'
+    | '/duyet'
+    | '/template'
+    | '/thu-vien'
+    | '/soan/$id'
+    | '/tai-lieu/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DuyetRoute: typeof DuyetRoute
+  TemplateRoute: typeof TemplateRoute
+  ThuVienRoute: typeof ThuVienRoute
+  SoanIdRoute: typeof SoanIdRoute
+  TaiLieuSlugRoute: typeof TaiLieuSlugRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/thu-vien': {
+      id: '/thu-vien'
+      path: '/thu-vien'
+      fullPath: '/thu-vien'
+      preLoaderRoute: typeof ThuVienRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/template': {
+      id: '/template'
+      path: '/template'
+      fullPath: '/template'
+      preLoaderRoute: typeof TemplateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/duyet': {
+      id: '/duyet'
+      path: '/duyet'
+      fullPath: '/duyet'
+      preLoaderRoute: typeof DuyetRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +138,30 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tai-lieu/$slug': {
+      id: '/tai-lieu/$slug'
+      path: '/tai-lieu/$slug'
+      fullPath: '/tai-lieu/$slug'
+      preLoaderRoute: typeof TaiLieuSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/soan/$id': {
+      id: '/soan/$id'
+      path: '/soan/$id'
+      fullPath: '/soan/$id'
+      preLoaderRoute: typeof SoanIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DuyetRoute: DuyetRoute,
+  TemplateRoute: TemplateRoute,
+  ThuVienRoute: ThuVienRoute,
+  SoanIdRoute: SoanIdRoute,
+  TaiLieuSlugRoute: TaiLieuSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
