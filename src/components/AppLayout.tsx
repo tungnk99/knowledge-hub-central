@@ -102,7 +102,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
         </nav>
 
         <main className="flex-1 overflow-auto">
-          <Outlet />
+          {children}
         </main>
       </div>
     </div>
