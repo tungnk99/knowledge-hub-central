@@ -49,7 +49,7 @@ function DocDetailPage() {
 }
 
 function DocDetail() {
-  const doc = Route.useLoaderData();
+  const doc = Route.useLoaderData() as DocItem;
   const [copied, setCopied] = useState(false);
 
   const copyMd = async () => {
