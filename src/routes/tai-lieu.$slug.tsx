@@ -5,10 +5,10 @@ import { ArrowLeft, Copy, Download, FileText, Pencil, CalendarDays, User, CheckC
 import { useState } from "react";
 import { AppLayout } from "@/components/AppLayout";
 import { TagBadge } from "@/components/TagBadge";
-import { MOCK_DOCS } from "@/lib/mock-data";
+import { MOCK_DOCS, type DocItem } from "@/lib/mock-data";
 
 export const Route = createFileRoute("/tai-lieu/$slug")({
-  loader: ({ params }) => {
+  loader: ({ params }): DocItem => {
     const doc = MOCK_DOCS.find((d) => d.slug === params.slug);
     if (!doc) throw notFound();
     return doc;
