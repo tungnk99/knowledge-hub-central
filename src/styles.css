@@ -4,28 +4,11 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/*
- * Design system definition.
- *
- * The @theme inline block maps CSS custom properties to Tailwind utility
- * classes (e.g. --color-primary -> bg-primary, text-primary).
- *
- * The :root and .dark blocks define the actual color values using oklch.
- * All colors MUST use oklch format.
- *
- * To add a new semantic color:
- * 1. Add the variable to :root (light value) and .dark (dark value)
- * 2. Register it in @theme inline as --color-<name>: var(--<name>)
- */
-
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
-  --radius-3xl: calc(var(--radius) + 12px);
-  --radius-4xl: calc(var(--radius) + 16px);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -45,91 +28,128 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-ring-offset-background: var(--background);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Vertical (khối khách hàng) */
+  --color-vertical-env: var(--vertical-env);
+  --color-vertical-env-foreground: var(--vertical-env-foreground);
+  --color-vertical-bfsi: var(--vertical-bfsi);
+  --color-vertical-bfsi-foreground: var(--vertical-bfsi-foreground);
+  --color-vertical-gov: var(--vertical-gov);
+  --color-vertical-gov-foreground: var(--vertical-gov-foreground);
+  --color-vertical-common: var(--vertical-common);
+  --color-vertical-common-foreground: var(--vertical-common-foreground);
+
+  /* Product (dòng sản phẩm) */
+  --color-product-voice: var(--product-voice);
+  --color-product-voice-foreground: var(--product-voice-foreground);
+  --color-product-agent: var(--product-agent);
+  --color-product-agent-foreground: var(--product-agent-foreground);
+  --color-product-cv: var(--product-cv);
+  --color-product-cv-foreground: var(--product-cv-foreground);
+
+  /* Phase (giai đoạn) */
+  --color-phase-consult: var(--phase-consult);
+  --color-phase-consult-foreground: var(--phase-consult-foreground);
+  --color-phase-poc: var(--phase-poc);
+  --color-phase-poc-foreground: var(--phase-poc-foreground);
+  --color-phase-effort: var(--phase-effort);
+  --color-phase-effort-foreground: var(--phase-effort-foreground);
+  --color-phase-bid: var(--phase-bid);
+  --color-phase-bid-foreground: var(--phase-bid-foreground);
+
+  /* Type (loại tài liệu) */
+  --color-type-standard: var(--type-standard);
+  --color-type-standard-foreground: var(--type-standard-foreground);
+  --color-type-template: var(--type-template);
+  --color-type-template-foreground: var(--type-template-foreground);
+  --color-type-lesson: var(--type-lesson);
+  --color-type-lesson-foreground: var(--type-lesson-foreground);
+  --color-type-playbook: var(--type-playbook);
+  --color-type-playbook-foreground: var(--type-playbook-foreground);
+
+  /* Status */
+  --color-status-draft: var(--status-draft);
+  --color-status-draft-foreground: var(--status-draft-foreground);
+  --color-status-reviewed: var(--status-reviewed);
+  --color-status-reviewed-foreground: var(--status-reviewed-foreground);
+  --color-status-approved: var(--status-approved);
+  --color-status-approved-foreground: var(--status-approved-foreground);
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.984 0.003 247.858);
-  --sidebar-foreground: oklch(0.129 0.042 264.695);
-  --sidebar-primary: oklch(0.208 0.042 265.755);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.968 0.007 247.896);
-  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
-  --sidebar-border: oklch(0.929 0.013 255.508);
-  --sidebar-ring: oklch(0.704 0.04 256.788);
-}
+  --radius: 0.5rem;
 
-.dark {
-  --background: oklch(0.129 0.042 264.695);
-  --foreground: oklch(0.984 0.003 247.858);
-  --card: oklch(0.208 0.042 265.755);
-  --card-foreground: oklch(0.984 0.003 247.858);
-  --popover: oklch(0.208 0.042 265.755);
-  --popover-foreground: oklch(0.984 0.003 247.858);
-  --primary: oklch(0.929 0.013 255.508);
-  --primary-foreground: oklch(0.208 0.042 265.755);
-  --secondary: oklch(0.279 0.041 260.031);
-  --secondary-foreground: oklch(0.984 0.003 247.858);
-  --muted: oklch(0.279 0.041 260.031);
-  --muted-foreground: oklch(0.704 0.04 256.788);
-  --accent: oklch(0.279 0.041 260.031);
-  --accent-foreground: oklch(0.984 0.003 247.858);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.208 0.042 265.755);
-  --sidebar-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.279 0.041 260.031);
-  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.551 0.027 264.364);
+  --background: oklch(0.99 0.005 250);
+  --foreground: oklch(0.18 0.03 260);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.18 0.03 260);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.18 0.03 260);
+
+  --primary: oklch(0.45 0.15 255);
+  --primary-foreground: oklch(0.99 0.005 250);
+
+  --secondary: oklch(0.96 0.01 250);
+  --secondary-foreground: oklch(0.25 0.04 260);
+
+  --muted: oklch(0.96 0.01 250);
+  --muted-foreground: oklch(0.5 0.02 260);
+
+  --accent: oklch(0.94 0.02 255);
+  --accent-foreground: oklch(0.25 0.04 260);
+
+  --destructive: oklch(0.6 0.22 27);
+  --destructive-foreground: oklch(0.99 0.005 250);
+
+  --border: oklch(0.92 0.01 255);
+  --input: oklch(0.92 0.01 255);
+  --ring: oklch(0.55 0.13 255);
+
+  /* Verticals: ENV=xanh lá, BFSI=xanh dương, GOV=đỏ-đô, Common=xám */
+  --vertical-env: oklch(0.93 0.08 150);
+  --vertical-env-foreground: oklch(0.3 0.12 150);
+  --vertical-bfsi: oklch(0.92 0.07 245);
+  --vertical-bfsi-foreground: oklch(0.32 0.14 250);
+  --vertical-gov: oklch(0.92 0.07 25);
+  --vertical-gov-foreground: oklch(0.35 0.15 25);
+  --vertical-common: oklch(0.93 0.01 260);
+  --vertical-common-foreground: oklch(0.35 0.02 260);
+
+  /* Products: Voice=cam, Agent=tím, CV=teal */
+  --product-voice: oklch(0.93 0.09 60);
+  --product-voice-foreground: oklch(0.4 0.15 50);
+  --product-agent: oklch(0.92 0.08 300);
+  --product-agent-foreground: oklch(0.35 0.18 300);
+  --product-cv: oklch(0.92 0.07 190);
+  --product-cv-foreground: oklch(0.32 0.12 200);
+
+  /* Phases: Tư vấn=indigo nhạt, PoC=hồng, Effort=vàng, Thầu=đỏ-cam */
+  --phase-consult: oklch(0.93 0.06 270);
+  --phase-consult-foreground: oklch(0.35 0.14 270);
+  --phase-poc: oklch(0.93 0.07 340);
+  --phase-poc-foreground: oklch(0.38 0.16 340);
+  --phase-effort: oklch(0.94 0.1 95);
+  --phase-effort-foreground: oklch(0.4 0.13 85);
+  --phase-bid: oklch(0.92 0.09 35);
+  --phase-bid-foreground: oklch(0.4 0.17 35);
+
+  /* Types */
+  --type-standard: oklch(0.45 0.15 255);
+  --type-standard-foreground: oklch(0.99 0.005 250);
+  --type-template: oklch(0.93 0.05 220);
+  --type-template-foreground: oklch(0.32 0.1 230);
+  --type-lesson: oklch(0.93 0.08 80);
+  --type-lesson-foreground: oklch(0.38 0.13 75);
+  --type-playbook: oklch(0.93 0.06 160);
+  --type-playbook-foreground: oklch(0.32 0.1 160);
+
+  /* Status: Nháp=xám, Đã review=vàng, Đã duyệt=xanh */
+  --status-draft: oklch(0.92 0.005 260);
+  --status-draft-foreground: oklch(0.4 0.02 260);
+  --status-reviewed: oklch(0.93 0.12 90);
+  --status-reviewed-foreground: oklch(0.4 0.13 75);
+  --status-approved: oklch(0.92 0.1 150);
+  --status-approved-foreground: oklch(0.32 0.13 150);
 }
 
 @layer base {
@@ -140,5 +160,51 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    font-feature-settings: "cv11", "ss01";
   }
 }
+
+/* Markdown content */
+.prose-doc {
+  color: var(--color-foreground);
+  line-height: 1.7;
+}
+.prose-doc h1 { font-size: 1.875rem; font-weight: 700; margin: 1.5rem 0 1rem; }
+.prose-doc h2 { font-size: 1.5rem; font-weight: 700; margin: 1.5rem 0 0.75rem; }
+.prose-doc h3 { font-size: 1.25rem; font-weight: 600; margin: 1.25rem 0 0.5rem; }
+.prose-doc p { margin: 0.75rem 0; }
+.prose-doc ul { list-style: disc; padding-left: 1.5rem; margin: 0.75rem 0; }
+.prose-doc ol { list-style: decimal; padding-left: 1.5rem; margin: 0.75rem 0; }
+.prose-doc li { margin: 0.25rem 0; }
+.prose-doc code {
+  background: var(--color-muted);
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+}
+.prose-doc pre {
+  background: var(--color-muted);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+.prose-doc pre code { background: transparent; padding: 0; }
+.prose-doc blockquote {
+  border-left: 3px solid var(--color-primary);
+  padding-left: 1rem;
+  color: var(--color-muted-foreground);
+  margin: 1rem 0;
+}
+.prose-doc table {
+  border-collapse: collapse;
+  margin: 1rem 0;
+  width: 100%;
+}
+.prose-doc th, .prose-doc td {
+  border: 1px solid var(--color-border);
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+.prose-doc th { background: var(--color-muted); font-weight: 600; }
+.prose-doc a { color: var(--color-primary); text-decoration: underline; }
